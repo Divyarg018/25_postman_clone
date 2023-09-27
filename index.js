@@ -1,3 +1,14 @@
+//utility functions
+function getElementFromString(string){
+    let div = documnet.createElement('div');
+    div.innerHTML = string;
+    return div.firstElementChild;
+}
+//initialise no of parameters
+let addedParamCount = 0;
+
+
+
 //hide the parameter box inititaly
 let parametersBox = document.getElementById('parametersBox');
 parametersBox.style.display = 'none';
@@ -27,5 +38,17 @@ addParam.addEventListener('click', () => {
     </div>
     <button class="btn btn-primary deleteParam"> - </button>
     </div>`;
+
+    let paramElement = getElementFromString(string);
+    params.appendChild(paramElement);
+    // Add an event listener to remove the parameter on clicking - button
+    let deleteParam = document.getElementsByClassName('deleteParam');
+    for (item of deleteParam) {
+        item.addEventListener('click', (e) => {
+            // TODO: add a confirmation box to confirm parameter deletion
+            e.target.parentElement.remove();
+        })
+    }
+    addedParamCount ++;
 })
 
