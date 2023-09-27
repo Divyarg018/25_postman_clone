@@ -1,5 +1,5 @@
 //utility functions
-function getElementFromString(string){
+function getElementFromString(string) {
     let div = documnet.createElement('div');
     div.innerHTML = string;
     return div.firstElementChild;
@@ -49,34 +49,67 @@ addParam.addEventListener('click', () => {
             e.target.parentElement.remove();
         })
     }
-    addedParamCount ++;
+    addedParamCount++;
 })
 
 
 let sumbit = document.getElementById('submit');
-sumbit.addEventListener('click',()=>{
+sumbit.addEventListener('click', () => {
     document.getElementById('responseJsonText').value = "Please wait..Fetching response...";
 
     let url = document.getElementById("url").value;
     let reqestType = document.querySelector("input[name='reuestType']:checked").value;
     let contentType = document.querySelector("input[name='contentType']:checked").value;
-    console.log('url is ', url);
-    console.log('request is ', contentType);
-    console.log('content is ', reqestType);
 
-    if(contentType == 'params'){
-        data ={};
-        for(i=0; i<addedParamCount+1; i++){
-            if(document.getElementById('parameterKey' + (i+1)!= undefined)){
-                
-                let key = documnet.getElementById('parameterKey' + (i+1)).value;
-                let value = documnet.getElementById('parameterValue' + (i+1)).value;
+
+    if (contentType == 'params') {
+        data = {};
+        for (i = 0; i < addedParamCount + 1; i++) {
+            if (document.getElementById('parameterKey' + (i + 1)) != undefined) {
+
+                let key = documnet.getElementById('parameterKey' + (i + 1)).value;
+                let value = documnet.getElementById('parameterValue' + (i + 1)).value;
                 data[key] = value;
             }
             data = JSON.stringify(data);
         }
     }
-    else{
+    else {
         data = document.getElementById('requestJsonText').value
     }
-})
+    console.log('url is ', url);
+    console.log('request is ', requestType);
+    console.log('content is ', contentType);
+    console.log('data is ', data);
+    if (requestType == 'GET') {
+        fetch(url, {
+            method: 'GET',
+        })
+            .then(response => response.text())
+            .then((text) => {
+                // document.getElementById('responseJsonText').value = text;
+                document.getElementById('responsePrism').innerHTML = text;
+                Prism.highlightAll();
+            });
+    }
+
+    else {
+        fetch(url, {
+            method: 'POST',
+            body: data,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.text())
+            .then((text) => {
+                // document.getElementById('responseJsonText').value = text;
+                document.getElementById('responsePrism').innerHTML = text;
+                Prism.highlightAll();
+            });
+
+    }
+
+
+});
+
