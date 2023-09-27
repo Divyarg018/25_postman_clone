@@ -52,3 +52,31 @@ addParam.addEventListener('click', () => {
     addedParamCount ++;
 })
 
+
+let sumbit = document.getElementById('submit');
+sumbit.addEventListener('click',()=>{
+    document.getElementById('responseJsonText').value = "Please wait..Fetching response...";
+
+    let url = document.getElementById("url").value;
+    let reqestType = document.querySelector("input[name='reuestType']:checked").value;
+    let contentType = document.querySelector("input[name='contentType']:checked").value;
+    console.log('url is ', url);
+    console.log('request is ', contentType);
+    console.log('content is ', reqestType);
+
+    if(contentType == 'params'){
+        data ={};
+        for(i=0; i<addedParamCount+1; i++){
+            if(document.getElementById('parameterKey' + (i+1)!= undefined)){
+                
+                let key = documnet.getElementById('parameterKey' + (i+1)).value;
+                let value = documnet.getElementById('parameterValue' + (i+1)).value;
+                data[key] = value;
+            }
+            data = JSON.stringify(data);
+        }
+    }
+    else{
+        data = document.getElementById('requestJsonText').value
+    }
+})
